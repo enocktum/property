@@ -222,7 +222,7 @@
 						//property seller content to be loaded
 						echo'
 								<div class="card" style="height:420px;width:420px;display: inline-block;margin-top:50px;padding-top:50px;margin-bottom:50px;padding-bottom:50px;">
-								<img src="siteversion/'.$propertydata['image'].'" class="img-rounded" alt="Structure to buy" style="width:250px;height:170px;">
+								<img src="siteversion/'.$propertydata['image'].'" class="img-rounded" alt="Structure to buy" style="width:250px;height:170px;border-radius:50px;object-fit:cover;">
 								<h5>'.$propertydata['name'].'</h5>
 								<table style="width:100%;">
 								<thead>
