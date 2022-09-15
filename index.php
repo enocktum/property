@@ -96,7 +96,7 @@
                 </button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <button class="btn btn-success rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="">
                     <span class="d-flex align-items-center">
-                        <i class="bi-cart"></i>
+
                         <?php
 							if(isset($_COOKIE['cartitems']))
 							{
@@ -325,7 +325,7 @@
                 <button class="btn btn-success rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target=""
                     style="position: fixed;bottom: 0;">
                     <span class="d-flex align-items-center">
-                        <i class="bi-cart"></i>
+
                         <?php
 							if(isset($_COOKIE['cartitems']))
 							{

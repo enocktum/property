@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 /*!
 * Start Bootstrap - New Age v6.0.6 (https://startbootstrap.com/theme/new-age)
 * Copyright 2013-2022 Start Bootstrap
@@ -64,7 +63,6 @@
   --bs-body-color: #212529;
   --bs-body-bg: #fff;
 }
-
 *,
 *::before,
 *::after {

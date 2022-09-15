@@ -350,7 +350,7 @@ name = "viewport" >
 
     <
     title > <?php echo $sitename; ?> < /title> <
-    meta content = ""
+meta content = ""
 name = "description" >
     <
     meta content = ""
