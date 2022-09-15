@@ -229,116 +229,55 @@
         <section class="section">
             <div class="content" style="background-color:white;width:100%;">
                 <?php
-		$propertyquery=mysqli_query($con,"select * from property where system_users_incre='$usersincre'");
-		$noproperty=mysqli_num_rows($propertyquery);
-		if($noproperty>0)
-		{
-			//continue viewing
-			echo'<table class="table table-hover table-responsive">
-			<thead>
-				<th>NAME</th>
-				<th>PRICE</th>
-        <th>PAYMENT<th>
-				<th></th>
-        <th></th>
-				<th></th>
-			</thead>
-			';
-			while($propertydata=mysqli_fetch_array($propertyquery))
-			{
-        //check service fee payment of the property seller
-				$approval=$propertydata['approved'];
-        $purchased=$propertydata['purchased'];
-        //check if property is purchased
-        if($purchased==0)
-        {
-				if($approval==0)
-				{
-					$approvalstatus="<Strong style='color:red'>Pending</strong>";
-				}
-				else if($approval==1)
-				{
-					$approvalstatus="<strong style='color:green;'>Payed</strong>";
-				}
-        //check status of the property based on site visit
-        $propertyincre=$propertydata['incre'];
-        $buyerquery=mysqli_query($con,"select * from buyerbids where propertyincre='$propertyincre'");
-        $noofbuyers=mysqli_num_rows($buyerquery);
-        if($noofbuyers>0)
-        {
-          //continue with identifying status
-          $sitevisitcount=0;
-          while($buyerdata=mysqli_fetch_array($buyerquery))
-          {
-            //getting all user data from the property
-            $visitstatus=$buyerdata['status'];
-            if($visitstatus==0)
-            {
-              $sitevisitcount++;
-            }
-
-
-          }
-          //start listing the number of unconfirmed site visits
-          if($sitevisitcount>0)
-          {
-            //confirmed site visits and print number of unconfirmed
-            $sitevisitstatus="
-					<td>
-						<form action='viewunapprovedpropertyvisit.php' method='post'>
-							<input type='hidden' name='propertyid' value='".$propertydata['incre']."'/>
-							<input type='submit' class='btn btn-primary' value='Pending Visit($sitevisitcount)'/>
-						</form>
-					</td>";
-          }
-          else
-          {
-            $sitevisitstatus="<td>No pending site visit</td>";
-          }
-        }
-        else
-        {
-          //make status of the property to be NO BUYERS AVAILABLE YET
-          $sitevisitstatus="<td>No buyers Yet</td>";
-        }
-        }
-        else
-        {
-          $sitevisitstatus="<td>Property Purchased</td>";
-        }
-        //end of checking if property has been purchased
-        //end 
-				echo"
-				<tr>
-					<td>".$propertydata['name']."</td>
-					<td>Ksh.".number_format($propertydata['price'])."</td>
-					<td>".$approvalstatus."</td>
-          ".$sitevisitstatus."
-					<td>
-						<form action='propertymoredetails.php' method='post'>
-							<input type='hidden' name='propertyid' value='".$propertydata['incre']."'/>
-							<input type='submit' class='btn btn-success' value='More Details'/>
-						</form>
-					</td>
-					<td>
-						<form action='propertysellerdelete.php' method='post'>
-							<input type='hidden' name='propertyid' value='".$propertydata['incre']."'/>
-							<input type='submit' class='btn btn-danger' value='Delete Property'/>
-						</form>
-					</td>
-				</tr>
-				";
-			}
-			echo'</table>';
-		}
-		else
-		{
-			echo'
-			<img class="img-responsive" src="assets/img/noresults.jpg" alt="There are no results" width="300px;"height="100px;"> 
-			Please add property <a href="selleraddproperty.php">HERE</a> first.
-			';
-		}
-		?>
+                $buyerbidquery=mysqli_query($con,"select * from buyerbids where status='0'");
+                $numofbids=mysqli_num_rows($buyerbidquery);
+                if($numofbids>0)
+                {
+                  echo"
+                  <table class='table table-responsive'>
+                    <thead>
+                      <th>Buyer</th>
+                      <th>phonenumber</th>
+                      <th>Property</th>
+                      <th>Price</th>
+                      <th>Location</th>
+                      <th></th>
+                    </thead>
+                  ";
+                  while($buyerbiddata=mysqli_fetch_array($buyerbidquery))
+                  {
+                    $propertyincre=$buyerbiddata['propertyincre'];
+                    $buyerbidincre=$buyerbiddata['incre'];
+                    $buyerincre=$buyerbiddata['buyerincre'];
+                    $propertyquery=mysqli_query($con,"select * from property where incre='$propertyincre' && system_users_incre='$usersincre' && purchased='0'");
+                    $propertydata=mysqli_fetch_array($propertyquery);
+                    $buyeruser=mysqli_query($con,"select * from system_users where incre='$buyerincre'");
+                    $buyeruserdata=mysqli_fetch_array($buyeruser);
+                    echo"
+                      <tr>
+                        <td>".$buyeruserdata['first_name']." ".$buyeruserdata['last_name']."</td>
+                        <td>".$buyeruserdata['phonenumber']."</td>
+                        <td>".$propertydata['name']."</td>
+                        <td>Ksh.".number_format($propertydata['price'])."</td>
+                        <td>".$propertydata['estate']."</td>
+                        <td>
+                          <form action='approvesitevisit.php' method='post'>
+                            <input type='hidden' value='".$buyerbidincre."' name='buyerbidincre'/>
+                            <input type='submit' class='btn btn-success' value='Approve Site Visit'/>
+                          </form>
+                        </td>
+                      </tr>
+                    ";
+                  }
+                  echo"
+                  </table>
+                  ";
+                }
+                else
+                {
+                  echo"<center><strong style='font-size:2em;'>There are no unapproved site visits</strong></center>";
+                }
+                ?>
             </div>
         </section>
         <!-- TABBED SECTION TO END HERE -->
